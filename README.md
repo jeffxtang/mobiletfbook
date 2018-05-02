@@ -6,7 +6,7 @@ The iOS apps have been tested with Xcode 8.2.1 and 9.2, and the Android apps hav
 # How to run the apps
 
 1. To get the repo, do `git clone https://github.com/jeffxtang/mobiletfbook`. The whole repo takes about 186MB, not including the large trained TensorFlow model files used in the iOS and Android apps in Chapters 3, 6, 9, and 11 - you can download the large model files in a 1.12GB zip format from my Google Drive [here](https://drive.google.com/file/d/1ARnO_Dhhkzhia5SA4gn0mEIHCFCEN-tJ). After downloading and unzipping it (to a folder named large_files), drag and drop all the folders inside the large_files folder to the mobiletfbook folder, created when you run `git clone https://github.com/jeffxtang/mobiletfbook`, to merge the large models into their relevant locations of the apps using them. After this, open a Terminal and `cd mobiletfbook`, run `git status` will show the following output:
-
+```
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
 
@@ -19,7 +19,7 @@ Untracked files:
 	ch6/ios/Image2Text/Image2Text/image2text_frozen_transformed_memmapped.pb
 	ch9/android/app/src/main/assets/pix2pix_transformed_quantized.pb
 	ch9/ios/GAN/GAN/pix2pix_transformed_memmapped.pb
-
+```
 Just leave those large model files as untracked.
 
 2. To run the iOS apps in Chapters 2 and 6, which use the TensorFlow pod, cd to the app's project folder where the Podfile is located (i.e. , `cd mobiletfbook/ch2/ios/HelloTensorFlow`, `cd mobiletfbook/ch2/ios/HelloTensorFlow_Swift`, and `cd mobiletfbook/ch6/ios/Image2Text`), then run `pod install`. After that, open the .xcworkspace file in Xcode.

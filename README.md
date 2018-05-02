@@ -1,21 +1,40 @@
 # About
 Source code repo for the book [Intelligent Mobile Projects with TensorFlow](https://www.amazon.com/Intelligent-Mobile-Projects-TensorFlow-wide-ranging/dp/1788834542).
 
-The iOS apps have been tested with Xcode 8.2.1 and 9.2, and the Android apps have been tested with Android Studio 3.0.1. TensorFlow 1.4, 1.5, 1.6, and 1.7 have been used for testing.
+The iOS apps have been tested with Xcode 8.2.1 and 9.2, and the Android apps have been tested with Android Studio 3.0.1. TensorFlow 1.4.0, 1.5.0, 1.6.0, 1.7.0, and 1.8.0 have been used for testing.
 
 # How to run the apps
 
-1. To get the repo, do `git clone https://github.com/jeffxtang/mobiletfbook`. The whole repo takes about 186MB, not including the large trained TensorFlow model files used in the iOS and Android apps in Chapters 3, 6, 9, and 11 - you can download the large model files in a 1.12GB zip format from my Google Drive [here](https://drive.google.com/file/d/1ARnO_Dhhkzhia5SA4gn0mEIHCFCEN-tJ). After downloading and unzipping it (to a folder named large_files), drag and drop all the folders inside the large_files folder to the mobiletfbook folder, created when you run `git clone https://github.com/jeffxtang/mobiletfbook`, to merge the large models into their relevant locations of the apps using them.
+1. To get the repo, do `git clone https://github.com/jeffxtang/mobiletfbook`. The whole repo takes about 186MB, not including the large trained TensorFlow model files used in the iOS and Android apps in Chapters 3, 6, 9, and 11 - you can download the large model files in a 1.12GB zip format from my Google Drive [here](https://drive.google.com/file/d/1ARnO_Dhhkzhia5SA4gn0mEIHCFCEN-tJ). After downloading and unzipping it (to a folder named large_files), drag and drop all the folders inside the large_files folder to the mobiletfbook folder, created when you run `git clone https://github.com/jeffxtang/mobiletfbook`, to merge the large models into their relevant locations of the apps using them. After this, open a Terminal and `cd mobiletfbook`, run `git status` will show the following output:
 
-2. To run the iOS apps in Chapters 2 and 6, which use the TensorFlow pod, first open a Terminal and cd to the app's project folder where the Podfile is located, then run `pod install`. After that, open the .xcworkspace file in Xcode.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
 
-3. To run the iOS apps in Chapters 3, 4, 5, 7, 8, 9, and 10, open the app's .xcodeproj file in Xcode, then go to the app's PROJECT's Build Settings, make sure the TENSORFLOW_ROOT variable is set to your TensorFlow source root. By default, it's set to $HOME/tensorflow-1.7.0 for all iOS apps in Chapters 4, 5, and 7-10, and to $HOME/tensorflow-1.4.0 for the iOS app in Chapter 3 (to be consistent with the protobuf version used for the app).
+	ch11/tflite/ios/TFObjectDetectionAPI/TFObjectDetectionAPI/faster_rcnn_inceptionv2_frozen_inference_graph.pb
+	ch11/tflite/ios/TFObjectDetectionAPI/TFObjectDetectionAPI/faster_rcnn_resnet101_frozen_inference_graph.pb
+	ch3/ios/TFObjectDetectionAPI/TFObjectDetectionAPI/faster_rcnn_inceptionv2_frozen_inference_graph.pb
+	ch3/ios/TFObjectDetectionAPI/TFObjectDetectionAPI/faster_rcnn_resnet101_frozen_inference_graph.pb
+	ch6/android/app/src/main/assets/image2text_frozen_transformed.pb
+	ch6/ios/Image2Text/Image2Text/image2text_frozen_transformed.pb
+	ch6/ios/Image2Text/Image2Text/image2text_frozen_transformed_memmapped.pb
+	ch9/android/app/src/main/assets/pix2pix_transformed_quantized.pb
+	ch9/ios/GAN/GAN/pix2pix_transformed_memmapped.pb
+
+Just leave those large model files as untracked.
+
+2. To run the iOS apps in Chapters 2 and 6, which use the TensorFlow pod, cd to the app's project folder where the Podfile is located (i.e. , `cd mobiletfbook/ch2/ios/HelloTensorFlow`, `cd mobiletfbook/ch2/ios/HelloTensorFlow_Swift`, and `cd mobiletfbook/ch6/ios/Image2Text`), then run `pod install`. After that, open the .xcworkspace file in Xcode.
+
+3. To run the iOS apps in Chapters 3, 4, 5, 7, 8, 9, and 10, which use the manually built TensorFlow iOS library, you need to first build the library by running `tensorflow/contrib/makefile/build_all_ios.sh` inside the TensorFlow source root (for example, tensorflow-1.8.0, after downloading it from https://github.com/tensorflow/tensorflow/archive/v1.8.0.tar.gz and unzipping). Then open the app's .xcodeproj file in Xcode and go to the app's PROJECT's Build Settings, make sure the TENSORFLOW_ROOT variable is set to your TensorFlow source root (the current default value is $HOME/tensorflow-1.8.0, assuming you unzip and move the tensorflow-1.8.0 folder to your home directory).
+
+Note that for TensorFlow 1.8.0, running `tensorflow/contrib/makefile/build_all_ios.sh` is all you need to build a TensorFlow iOS library that works with the iOS apps in Chapters 3-5 and 8-10, but for the iOS app in Chapter 7, you need to change `-D__ANDROID_TYPES_SLIM__` in `tensorflow/contrib/makefile/Makefile` to `-D__ANDROID_TYPES_FULL__` first before running `tensorflow/contrib/makefile/build_all_ios.sh`. For TensorFlow versions 1.4.0 to 1.7.0, you may need additional steps to build a TensorFlow iOS library that works with the apps - see the book for more details if you use a TensorFlow version earlier than 1.8.0 and encounter problems when building and running the iOS apps in those chapters.
+
+Also note that building the TensorFlow iOS custom library by running `tensorflow/contrib/makefile/build_all_ios.sh` could take 2-3 hours on an older Mac, but after that, running the iOS apps works like a breeze.
 
 4. To run the Android apps in Chapters 2-11 (except Chapter 3 where only an iOS app is included), simply select "Open an existing Android Studio project" after launching Android Studio, then choose the Chapter's android folder. If you see an error "Error Loading Project: Cannot load 2 modules" with details as "2 modules cannot be loaded. You can remove them from the project (no files will be deleted).", you can ignore it or click Remove Selected.
 
 5. To run the TensorFlow Lite, Core ML and Raspberry Pi apps in Chapters 11 and 12, please follow the steps in the book.
 
-6. If you still use Xcode 8.2.1, probably because you want to see if your older Mac with an older OS version such as OS X 10.11 El Capitan can run the latest and greatest TensorFlow, then you may encounter an error "Base.lproj/Main.storyboard: This document requires Xcode 9.0 or later." when building an iOS app in the repo. To fix it and let your older Mac shine with the power of TensorFlow, simply drag the two stobyboard files inside the repo's Xcode821 folder to the iOS app's Base.lproj folder and rebuild the app. Warning: building the TensorFlow iOS custom library, as required by many iOS apps in the book, could take 2-3 hours on an older Mac, but after that, running the iOS apps works like a breeze.
+6. If you still use Xcode 8.2.1, probably because you want to see if your older Mac with an older OS version such as OS X 10.11 El Capitan can run the latest and greatest TensorFlow, then you may encounter an error "Base.lproj/Main.storyboard: This document requires Xcode 9.0 or later." when building an iOS app in the repo. To fix it and let your older Mac shine with the power of TensorFlow, simply drag the two stobyboard files inside the repo's Xcode821 folder to the iOS app's Base.lproj folder and rebuild the app.
 
 # What's included in the book
 There are 12 chapters in the book, starting with steps on how to set up TensorFlow and a NVIDIA GPU for much faster TensorFlow model training, as well as Xcode and Android Studio for TensorFlow Mobile app development. Chapters 2 to 10 are about building and training TensorFlow models and use the models on iOS and Android apps using TensorFlow Mobile, the current production-ready way to run TensorFlow apps on mobile (versus TensorFlow Lite, an alternative way - see the section When to Read the Book for more details).
